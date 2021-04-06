@@ -1,14 +1,18 @@
 # Cloud9 Utilities
 
 ## How to install
-....
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/r-kuhr/c9util/HEAD/install.sh)"
 
 ## Utilities
 
-### Resize volume
+### EBS Volume Resize
 
-    c9u_resize_volume.sh 40
+    volume_rezie 140
+    
+### Kaggle Setup
+
+    kagge_setup
 
 # TODO:
 * Make sure there is an 'are you sure you want to do this' and show before & after
