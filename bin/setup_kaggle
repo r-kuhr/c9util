@@ -1,0 +1,10 @@
+#!/bin/bash
+
+KAGGLE_PATH="/home/ec2-user/.kaggle"
+pip install --user kaggle
+mkdir -p $KAGGLE_PATH
+echo "Enter in your API Token:"
+read API_TOKEN
+echo $API_TOKEN > $KAGGLE_PATH/kaggle.json
+chmod 400 $KAGGLE_PATH/kaggle.json
+echo "done"
