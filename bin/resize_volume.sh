@@ -20,8 +20,7 @@ CURRENT_SIZE=$(aws ec2 describe-volumes \
 read -r -p \
   "Are you sure you want to change your current volume size of ${CURRENT_SIZE} Gib to ${SIZE} GiB? [y/N] " \
   response
-response=${response,,}
-if [[ ! $response =~ ^(yes|y)$ ]]
+if [[ ! ${response,,} =~ ^(yes|y)$ ]]
 then
   printf "\n**Canceling resize**\n"
   exit 
