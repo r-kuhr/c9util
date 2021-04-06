@@ -3,16 +3,29 @@
 # Specify the desired volume size in GiB as a command line argument. If not specified, default to 20 GiB.
 SIZE=${1:-20}
 
-echo "Resizing drive to ${SIZE} GiB"
-
 # Get the ID of the environment host Amazon EC2 instance.
-INSTANCEID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+INSTANCEID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 
 # Get the ID of the Amazon EBS volume associated with the instance.
 VOLUMEID=$(aws ec2 describe-instances \
   --instance-id $INSTANCEID \
   --query "Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId" \
   --output text)
+  
+CURRENT_SIZE=$(aws ec2 describe-volumes \
+  --volume-id $VOLUMEID \
+  --query "Volumes[0].Size"
+  --output text)
+
+read -r -p \
+  "Are you sure you want to change your current volume size of ${CURRENT_SIZE} Gib to ${SIZE} GiB? [y/N] " \
+  response
+response=${response,,}
+if [[ ! $response =~ ^(yes|y)$ ]]
+then
+  printf "\n**Canceling resize**\n"
+  exit 
+fi
 
 # Resize the EBS volume.
 aws ec2 modify-volume --volume-id $VOLUMEID --size $SIZE
